@@ -39,6 +39,8 @@ local Tab = Window:MakeTab({Name = "Main", Icon = "rbxassetid://4483345998"})
 local TabMis = Window:MakeTab({Name = "Miscellaneous", Icon = "rbxassetid://4483345998"})
 local TabCred = Window:MakeTab({Name = "Credits", Icon = "rbxassetid://4483345998"})
 
+OrionLib:MakeNotification({Name = "AstralHook", Content = "Welcome to AstralHook. Any bugs report it on our Discord Server.", Image = "rbxassetid://4483345998", Time = 5})
+
 Tab:AddToggle({Name = "Auto Pop Balloons & Crates", Default = false, Callback = function(Value)
     getgenv().AutoPopBalloons = Value
 end  
@@ -56,7 +58,7 @@ if AutoPopBalloons then
    end
 end))
 
-Tab:AddToggle({Name = "Auto Collect Everything", Default = false, Callback = function(Value)
+Tab:AddToggle({Name = "Auto Collect Everything", Default = false, Callback = function(Value2)
     getgenv().AutoCollect = Value2
 end  
 })
@@ -73,18 +75,14 @@ if AutoCollect then
    end
 end))
 
-Tab:AddToggle({Name = "Auto Rebirth", Default = false, Callback = function(Value)
+Tab:AddToggle({Name = "Auto Rebirth", Default = false, Callback = function(Value3)
     getgenv().AutoRebirth = Value3
+
+	while AutoRebirth do task.wait(3)
+		Services.LevelingService.RF.AttemptRebirth:InvokeServer()
+	end
 end  
 })
-
-coroutine.resume(coroutine.create(function()
-while task.wait(3) do
-   if AutoRebirth then
-	     Services.LevelingService.RF.AttemptRebirth:InvokeServer()
-      end
-   end
-end))
 
 local Section = Tab:AddSection({Name = "Collectables"})
 
@@ -108,7 +106,7 @@ end
 
 --OrionLib:MakeNotification({Name = "AstralHook", Content = "Data Disks are not spawned, or either is in another World.", Image = "rbxassetid://4483345998", Time = 5})
 
-TabMis:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = function(Value)
+TabMis:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = function(Value4)
     getgenv().AutoComplete = Value4
 end  
 })
@@ -144,7 +142,7 @@ while task.wait(0.2) do
    end
 end))
 
-TabMis:AddToggle({Name = "Auto Combine Chaos", Default = false, Callback = function(Value)
+TabMis:AddToggle({Name = "Auto Combine Chaos", Default = false, Callback = function(Value5)
     getgenv().AutoCombine = Value5
 end  
 })
@@ -198,7 +196,7 @@ end
 
 TabMis:AddButton({Name = "Get Boosts", Callback = function()
 for i = 1, 12 do
-	   game:GetService("ReplicatedStorage").Knit.Services.GratitudeService.RF.AcquireReward:InvokeServer(i)
+	   Services.GratitudeService.RF.AcquireReward:InvokeServer(i)
    end
 end    
 })
