@@ -1,11 +1,11 @@
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/libs/main/elerium"))()
-
-local qq = library:AddWindow("AstralHook | Sonic Speed Simulator")
-local HomeTab = qq:AddTab("Home")
-local MainTab = qq:AddTab("Main")
-local MiscTab = qq:AddTab("Miscellaneous")
-local SettingsTab = qq:AddTab("Settings")
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({
+Name = "AstralHook | Sonic Speed Simulator",
+HidePremium = false,
+SaveConfig = false,
+IntroEnabled = true,
+IntroText = "Welcome to AstralHook",
+})
 
 local LocalPlayer = game:GetService("Players").LocalPlayer
 
@@ -35,131 +35,188 @@ for _,v in pairs(getconnections(LocalPlayer.Idled)) do
      v:Disable()
 end
 
-HomeTab:AddLabel("Scripted by infinite#7302")
-HomeTab:AddLabel("UI Library by @Singularity")
+local Tab = Window:MakeTab({Name = "Main", Icon = "rbxassetid://4483345998"})
+local TabMis = Window:MakeTab({Name = "Miscellaneous", Icon = "rbxassetid://4483345998"})
+local TabCred = Window:MakeTab({Name = "Credits", Icon = "rbxassetid://4483345998"})
 
-HomeTab:AddButton("Copy Discord Server Link", function()
-	setclipboard("https://discord.gg/ssaVPA6atd")
-end)
+Tab:AddToggle({Name = "Auto Pop Balloons & Crates", Default = false, Callback = function(Value)
+    getgenv().AutoPopBalloons = Value
+end  
+})
 
-MainTab:AddLabel("Main")
-
-MainTab:AddSwitch("Auto Pop Balloons & Crates", function(a)
-getgenv().AutoBreak = a
-while AutoBreak do task.wait(0.3)
-for _,v in pairs(Destructibles:GetChildren()) do
+coroutine.resume(coroutine.create(function()
+while task.wait(0.3) do
+if AutoPopBalloons then
+	for _,v in pairs(Destructibles:GetChildren()) do
      if v:FindFirstChild("base").Attachment:FindFirstChild("dus") and v then
-	          ProcessDestructible:FireServer(v.Name)
-	      end
-       end
-    end
-end)
+	           ProcessDestructible:FireServer(v.Name)
+	        end
+         end
+      end
+   end
+end))
 
-MainTab:AddSwitch("Auto Collect Everything", function(b)
-getgenv().AutoCollect = b
-while AutoCollect do task.wait(5)
-for _,v in pairs(WorldCurrencies:GetChildren()) do
+Tab:AddToggle({Name = "Auto Collect Everything", Default = false, Callback = function(Value)
+    getgenv().AutoCollect = Value2
+end  
+})
+
+coroutine.resume(coroutine.create(function()
+while task.wait(5) do
+if AutoCollect then
+	for _,v in pairs(WorldCurrencies:GetChildren()) do
      if v:IsA("Model") and v then
-              PickupCurrency:FireServer(v.Name) v:Destroy()
-	      end
-       end
-    end
-end)
+                PickupCurrency:FireServer(v.Name) v:Destroy()
+	        end
+         end
+      end
+   end
+end))
 
-MainTab:AddSwitch("Auto Rebirth", function(c)
-getgenv().AutoRebirth = c
-while AutoRebirth do task.wait(3)
-         Services.LevelingService.RF.AttemptRebirth:InvokeServer()
-    end
-end)
+Tab:AddToggle({Name = "Auto Rebirth", Default = false, Callback = function(Value)
+    getgenv().AutoRebirth = Value3
+end  
+})
 
-MiscTab:AddLabel("Miscellaneous")
+coroutine.resume(coroutine.create(function()
+while task.wait(3) do
+   if AutoRebirth then
+	     Services.LevelingService.RF.AttemptRebirth:InvokeServer()
+      end
+   end
+end))
 
-MiscTab:AddSwitch("Auto Complete Obbys", function(d)
-getgenv().AutoComplete = d
-while AutoComplete do task.wait(.5)
-       RequestTeleportToZone:InvokeServer("Green Hill Obby 1") task.wait(0.2)
-       ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 1") task.wait(0.2)
-       ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 1", true)
-       RequestFreeSpin:InvokeServer("GreenHill1")
-	   task.wait(0.2)
+local Section = Tab:AddSection({Name = "Collectables"})
 
-	   RequestTeleportToZone:InvokeServer("Green Hill Obby 2") task.wait(0.2)
-       ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 2") task.wait(0.2)
-       ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 2", true) task.wait(0.2)
-       RequestFreeSpin:InvokeServer("GreenHill2")
-	   task.wait(0.2)
-
-	   RequestTeleportToZone:InvokeServer("Green Hill Obby 3") task.wait(0.2)
-       ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 3")
-       ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 3", true) task.wait(0.2)
-       RequestFreeSpin:InvokeServer("GreenHill3")
-	   task.wait(0.1)
-    end
-end)
-
-MiscTab:AddButton("Unlock all Worlds", function()
-    RequestTeleportToZone:InvokeServer("Lost Valley Obby", "Green Hill Exit")
-    CompleteZoneObby:InvokeServer()
-    task.wait(0.3)
-    
-    RequestTeleportToZone:InvokeServer("Emerald Hill Obby", "Lost Valley Exit")
-    CompleteZoneObby:InvokeServer()
-    task.wait(0.3)
-    
-    RequestTeleportToZone:InvokeServer("Snow Valley Obby", "Emerald Hill Exit")
-    CompleteZoneObby:InvokeServer()
-
-    task.wait(0.3)
-    
-    RequestTeleportToZone:InvokeServer("Hill Top Zone Obby", "Snow Valley Hill Exit")
-    CompleteZoneObby:InvokeServer()
-end)
-
-MiscTab:AddButton("Unlock all Characters", function()
-    RequestUnlockCharacter:FireServer("sonic")
-    task.wait(0.3)
-    RequestTeleportToZone:InvokeServer("Lost Valley")
-    RequestUnlockCharacter:FireServer("tails")
-    task.wait(0.3)
-    RequestTeleportToZone:InvokeServer("Emerald Hill")
-    RequestUnlockCharacter:FireServer("knuckles")
-end)
-
-MiscTab:AddSwitch("Auto Combine Chaos", function(e)
-getgenv().AutoCombine = e
-while AutoCombine do task.wait(3)
-local Data = require(game:GetService("ReplicatedFirst").Client.Controllers.Player.DataController)
-
-for i, v in pairs(Data.Data.Pets) do
-             Services.PetService.RE.CombinePet:FireServer(i, v)
-	      end
-    end
-end)
-
-MainTab:AddLabel("Collectables")
-
-MainTab:AddButton("Collect all Wrenches", function()
-for _,v in pairs(workspace:GetDescendants()) do
-	if v.Name == "Card" and v:FindFirstChild("Attachment").Shine and v then
-	       Services.CharacterShardService.RE.CharacterShardPickup:FireServer("mechanic tails", v.Parent.Name, true)
-       end
-    end
-end)
-
-MainTab:AddLabel("You must be on Chemical Plant. World 7")
-MainTab:AddButton("Collect all Data Disks", function()
+Section:AddButton({Name = "Collect Data Disks", Callback = function()
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Card" and v:FindFirstChild("Sparkles") and v then
-           Services.CharacterShardService.RE.CharacterShardPickup:FireServer("stealth suit sonic", v.Parent.Name)
-       end 
+            Services.CharacterShardService.RE.CharacterShardPickup:FireServer("stealth suit sonic", v.Parent.Name)
+       end
     end
-end)
-
-SettingsTab:AddLabel("Settings")
-
-local keybind = SettingsTab:AddKeybind("Toggle UI Keybind", function(obj)
-	ui_options.toggle_key = obj
-end, {
-	["standard"] = Enum.KeyCode.RightShift,
+end    
 })
+
+Section:AddButton({Name = "Collect Wrenches", Callback = function()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Card" and v:FindFirstChild("Attachment").Shine and v then
+           Services.CharacterShardService.RE.CharacterShardPickup:FireServer("mechanic tails", v.Parent.Name, true)
+       end
+    end
+end    
+})
+
+--OrionLib:MakeNotification({Name = "AstralHook", Content = "Data Disks are not spawned, or either is in another World.", Image = "rbxassetid://4483345998", Time = 5})
+
+TabMis:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = function(Value)
+    getgenv().AutoComplete = Value4
+end  
+})
+
+coroutine.resume(coroutine.create(function()
+while task.wait(0.2) do
+   if AutoComplete then
+	     RequestTeleportToZone:InvokeServer("Green Hill Obby 1")
+	     task.wait(0.02)
+         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 1")
+	     task.wait(0.02)
+         ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 1", true)
+         RequestFreeSpin:InvokeServer("GreenHill1")
+	     task.wait(0.15)
+
+	     RequestTeleportToZone:InvokeServer("Green Hill Obby 2")
+	     task.wait(0.02)
+         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 2")
+	     task.wait(0.02)
+         ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 2", true)
+	     task.wait(0.02)
+         RequestFreeSpin:InvokeServer("GreenHill2")
+	     task.wait(0.15)
+
+	     RequestTeleportToZone:InvokeServer("Green Hill Obby 3")
+	     task.wait(0.02)
+         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 3")
+	     task.wait(0.02)
+         ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 3", true)
+	     task.wait(0.02)
+         RequestFreeSpin:InvokeServer("GreenHill3")
+      end
+   end
+end))
+
+TabMis:AddToggle({Name = "Auto Combine Chaos", Default = false, Callback = function(Value)
+    getgenv().AutoCombine = Value5
+end  
+})
+
+coroutine.resume(coroutine.create(function()
+while task.wait(0.2) do
+   if AutoCombine then
+    local Data = require(game:GetService("ReplicatedFirst").Client.Controllers.Player.DataController)
+      for i, v in pairs(Data.Data.Pets) do
+             Services.PetService.RE.CombinePet:FireServer(i, v)
+          end
+       end
+    end
+end))
+
+TabMis:AddButton({Name = "Unlock All Worlds",
+	Callback = function()
+    RequestTeleportToZone:InvokeServer("Lost Valley Obby", "Green Hill Exit")
+	task.wait(0.2)
+    CompleteZoneObby:InvokeServer()
+    task.wait(0.5)
+    
+    RequestTeleportToZone:InvokeServer("Emerald Hill Obby", "Lost Valley Exit")
+    task.wait(0.2)
+	CompleteZoneObby:InvokeServer()
+    task.wait(0.5)
+    
+    RequestTeleportToZone:InvokeServer("Snow Valley Obby", "Emerald Hill Exit")
+    task.wait(0.2)
+	CompleteZoneObby:InvokeServer()
+
+    task.wait(0.5)
+    
+    RequestTeleportToZone:InvokeServer("Hill Top Zone Obby", "Snow Valley Hill Exit")
+    task.wait(0.2)
+	CompleteZoneObby:InvokeServer()
+end    
+})
+
+TabMis:AddButton({Name = "Unlock All Characters",
+	Callback = function()
+    RequestUnlockCharacter:FireServer("sonic")
+	task.wait(0.1)
+    RequestTeleportToZone:InvokeServer("Lost Valley")
+    RequestUnlockCharacter:FireServer("tails")
+    task.wait(0.1)
+    RequestTeleportToZone:InvokeServer("Emerald Hill")
+    RequestUnlockCharacter:FireServer("knuckles")
+end    
+})
+
+TabMis:AddButton({Name = "Get Boosts", Callback = function()
+for i = 1, 12 do
+	   game:GetService("ReplicatedStorage").Knit.Services.GratitudeService.RF.AcquireReward:InvokeServer(i)
+   end
+end    
+})
+
+TabCred:AddLabel("Scripted by infinite#7302")
+TabCred:AddLabel("Tested by Matheuz#2712")
+TabCred:AddLabel("UI by @Singularity")
+
+TabCred:AddButton({Name = "Copy Discord Server Link", Callback = function()
+     setclipboard("https://discord.gg/ssaVPA6atd")
+	 print("AstralHook: Copied Discord Server to Clipboard.")
+end    
+})
+
+TabCred:AddBind({Name = "UI Toggle Keybind", Default = Enum.KeyCode.RightShift, Hold = false,
+	Callback = function()
+		print("AstralHook: Keybind Changed.")
+	end    
+})
+
+OrionLib:Init()
