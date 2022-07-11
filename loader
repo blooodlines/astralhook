@@ -9,7 +9,8 @@ pcall(function()
 end)
 
 local SupportedGames = {
-    9049840490
+    9049840490,
+    3101667897
 }
 
 if not table.find(SupportedGames, game.PlaceId) then
