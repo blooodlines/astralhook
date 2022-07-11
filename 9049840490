@@ -1,7 +1,7 @@
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/libs/main/elerium"))()
 
-local qq = library:AddWindow("Sonic Speed Simulator")
+local qq = library:AddWindow("AstralHook | Sonic Speed Simulator")
 local HomeTab = qq:AddTab("Home")
 local MainTab = qq:AddTab("Main")
 local MiscTab = qq:AddTab("Miscellaneous")
