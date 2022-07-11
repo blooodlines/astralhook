@@ -1,0 +1,79 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({
+Name = "AstralHook | Legends of Speed - v1.0.0",
+HidePremium = false,
+SaveConfig = false,
+IntroEnabled = true,
+IntroText = "Welcome to AstralHook"
+})
+
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Character = LocalPlayer.Character
+
+local areaNameValue = Character:FindFirstChild("areaNameValue")
+
+local rEvents = game:GetService("ReplicatedStorage").rEvents
+local orbEvent = rEvents.orbEvent
+
+-- Anti-AFK
+for _,v in pairs(getconnections(LocalPlayer.Idled)) do
+     v:Disable()
+end
+
+local Tab = Window:MakeTab({Name = "Main", Icon = "rbxassetid://4483345998"})
+--local TabCred = Window:MakeTab({Name = "Credits", Icon = "rbxassetid://4483345998"})
+
+OrionLib:MakeNotification({Name = "AstralHook", Content = "Welcome to AstralHook. This game is supported.", Image = "rbxassetid://4483345998", Time = 5})
+
+Tab:AddToggle({Name = "Auto Collect Orbs", Default = false, Callback = function(Value)
+getgenv().AutoCollectOrbs = Value
+spawn(function()
+  while AutoCollectOrbs do task.wait(0.3)
+	       for i = 1, 20 do 
+                  orbEvent:FireServer("collectOrb", "Blue Orb", areaNameValue)
+	              orbEvent:FireServer("collectOrb", "Yellow Orb", areaNameValue)
+	              orbEvent:FireServer("collectOrb", "Orange Orb", areaNameValue)
+                  orbEvent:FireServer("collectOrb", "Red Orb", areaNameValue)
+           end
+        end
+    end)
+end
+})
+
+Tab:AddToggle({Name = "Auto Collect Hoops", Default = false, Callback = function(Value2)
+getgenv().AutoCollectHoops = Value2
+spawn(function()
+  while AutoCollectHoops do task.wait(0.3)
+	       for _,v in pairs(workspace.Hoops:GetChildren()) do
+	           if v.Name == "Hoop" and v then
+	            v.CFrame = Character.HumanoidRootPart.CFrame
+			   end
+		   end
+        end
+    end)
+end
+})
+
+Tab:AddToggle({Name = "Auto Collect Gems", Default = false, Callback = function(Value3)
+getgenv().AutoCollectGems = Value3
+spawn(function()
+  while AutoCollectGems do task.wait(0.3)
+	       for i = 1, 20 do 
+                  orbEvent:FireServer("collectOrb", "Gem", areaNameValue)
+           end
+        end
+    end)
+end
+})
+
+Tab:AddToggle({Name = "Auto Rebirth", Default = false, Callback = function(Value4)
+getgenv().AutoRebirth = Value4
+spawn(function()
+  while AutoRebirth do task.wait(1)
+               rEvents.rebirthEvent:FireServer("rebirthRequest")
+        end
+    end)
+end
+})
+
+OrionLib:Init()
