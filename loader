@@ -15,5 +15,5 @@ local SupportedGames = {
 if not table.find(SupportedGames, game.PlaceId) then
     print("Game is not supported.")
 else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/" .. game.PlaceId .. "))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/".. game.PlaceId))()
 end
