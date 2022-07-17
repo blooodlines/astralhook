@@ -202,7 +202,6 @@ end
 })
 
 TabCred:AddLabel("Scripted by infinite#7302")
-TabCred:AddLabel("Tested by Matheuz#2712")
 TabCred:AddLabel("UI by @Singularity")
 
 TabCred:AddButton({Name = "Copy Discord Server Link", Callback = function()
