@@ -9,12 +9,11 @@ pcall(function()
 end)
 
 local SupportedGames = {
-    9049840490,
-    3101667897
+    9049840490
 }
 
 if not table.find(SupportedGames, game.PlaceId) then
-    print("Game is not supported.")
+    print("1")
 else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/".. game.PlaceId))()
 end
