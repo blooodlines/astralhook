@@ -48,23 +48,16 @@ Section1:AddToggle({Name = "Auto Pop Balloons & Crates", Default = false, Callba
  getgenv().AutoPopBalloons = Value
  while AutoPopBalloons do task.wait(0.3)
 	 for _,v in pairs(Destructibles:GetChildren()) do
-      if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") and v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
+      if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") or v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
 	         ProcessDestructible:FireServer(v.Name) v:Destroy()
 	     end
-      end
-	  if v then
-		  OrionLib:MakeNotification({Name = "AstralHook", Content = "Collected all balloons & crates.", Image = "rbxassetid://4370317928", Time = 5})
-		  task.wait(6)
-	      else
-		  OrionLib:MakeNotification({Name = "AstralHook", Content = "No balloons or crates were found.", Image = "rbxassetid://4370317928", Time = 5})
-		  task.wait(6)
 	  end
    end
 end  
 })
 
-Section1:AddToggle({Name = "Auto Rebirth", Default = false, Callback = function(Value3)
-getgenv().AutoRebirth = Value3
+Section1:AddToggle({Name = "Auto Rebirth", Default = false, Callback = function(Value2)
+getgenv().AutoRebirth = Value2
    while AutoRebirth do task.wait(3)
        Services.LevelingService.RF.AttemptRebirth:InvokeServer()
    end
@@ -80,15 +73,11 @@ if v.Name == "Card" and v:FindFirstChild("Attachment").Shine and v then
           CharacterShardPickup:FireServer("mechanic tails", v.Parent.Name, true)
       end
    end
-   if not v then
-	   OrionLib:MakeNotification({Name = "AstralHook", Content = "No Wrenches were found.", Image = "rbxassetid://4370317928", Time = 5})
-	   task.wait(6)
-   end
 end
 })
 
-TabMis:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = function(Value4)
-    getgenv().AutoComplete = Value4
+TabMis:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = function(Value3)
+    getgenv().AutoComplete = Value3
 	while AutoComplete do task.wait(0.2)
 	RequestTeleportToZone:InvokeServer("Green Hill Obby 1")
 	     task.wait(0.02)
@@ -157,11 +146,11 @@ for i = 1, 12 do
 end    
 })
 
-TabEvent:AddToggle({Name = "Auto Pop Event Balloons", Default = false, Callback = function(Value6)
-    getgenv().Auto2 = Value6
-    while Auto2 do task.wait(0.5)
+TabEvent:AddToggle({Name = "Auto Pop Event Balloons", Default = false, Callback = function(Value4)
+    getgenv().AutoPopEventBalloons = Value4
+    while AutoPopEventBalloons do task.wait(0.5)
         for _,v in pairs(Destructibles:GetChildren()) do
-         if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") and v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
+         if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") and v then
 	          ProcessDestructible:FireServer(v.Name) v:Destroy()
 	     end
       end
@@ -176,16 +165,16 @@ TabPets:AddDropdown({Name = "Choose Vending Machine", Default = "1",
     end    
 })
 
-TabPets:AddToggle({Name = "Auto Open Selected Vending", Default = false, Callback = function(Value7)
-    getgenv().AutoOpen = Value7
+TabPets:AddToggle({Name = "Auto Open Selected Vending", Default = false, Callback = function(Value5)
+    getgenv().AutoOpen = Value5
     while AutoOpen do task.wait(0.5)
         Services.VendorService.RF.EggPurchased:InvokeServer(Vendor, 1, 0)
    end
 end  
 })
 
-TabPets:AddToggle({Name = "Auto Combine Chaos", Default = false, Callback = function(Value5)
-    getgenv().AutoCombine = Value5
+TabPets:AddToggle({Name = "Auto Combine Chaos", Default = false, Callback = function(Value6)
+    getgenv().AutoCombine = Value6
 	while AutoCombine do task.wait(0.2)
 	local Data = require(game:GetService("ReplicatedFirst").Client.Controllers.Player.DataController)
       for i, v in pairs(Data.Data.Pets) do
@@ -209,7 +198,6 @@ TabCred:AddButton({Name = "Copy Discord Server Link", Callback = function()
 
 TabCred:AddBind({Name = "UI Toggle Keybind", Default = Enum.KeyCode.RightShift, Hold = false, Callback = function()
    	  print("AstralHook: Keybind Changed.")
-	  OrionLib:MakeNotification({Name = "AstralHook", Content = "UI Toggle Keybind Changed.", Image = "rbxassetid://4370317928", Time = 2})
   end    
 })
 
