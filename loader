@@ -8,6 +8,11 @@ pcall(function()
     end
 end)
 
+    
+local LocalPlayer = game:GetService("Players").LocalPlayer
+
+local Blacklisted = {1181917463}
+
 local SupportedGames = {
     9049840490
 }
@@ -15,5 +20,10 @@ local SupportedGames = {
 if not table.find(SupportedGames, game.PlaceId) then
     print("Game is not supported.")
 else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/".. game.PlaceId))()
+
+if table.find(Blacklisted, LocalPlayer.UserId) then
+       LocalPlayer:Kick()
+   else
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/".. game.PlaceId))()
+   end
 end
