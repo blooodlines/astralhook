@@ -44,8 +44,8 @@ local Section1 = Tab:AddSection({Name = "Farming"})
 
 OrionLib:MakeNotification({Name = "AstralHook", Content = "Welcome to AstralHook. This game is supported.", Image = "rbxassetid://4370317928", Time = 5})
 
-Section1:AddToggle({Name = "Auto Pop Balloons & Crates", Default = false, Callback = function(Value)
- getgenv().AutoPopBalloons = Value
+Section1:AddToggle({Name = "Auto Pop Balloons & Crates", Default = false, Callback = function(Value1)
+ getgenv().AutoPopBalloons = Value1
  while AutoPopBalloons do task.wait(0.3)
 	 for _,v in pairs(Destructibles:GetChildren()) do
       if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") or v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
