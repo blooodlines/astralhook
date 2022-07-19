@@ -1,10 +1,10 @@
 pcall(function()
     if syn then
-        http_request = syn.request
+         http_request = syn.request
     elseif fluxus.request then 
          http_request = fluxus.request
     elseif KRNL_LOADED then
-        http_request = request
+         http_request = request
     end
 end)
 
@@ -13,7 +13,7 @@ local SupportedGames = {
 }
 
 if not table.find(SupportedGames, game.PlaceId) then
-    print("1")
+    print("Game is not supported.")
 else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/".. game.PlaceId))()
 end
