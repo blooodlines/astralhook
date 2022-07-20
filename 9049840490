@@ -1,3 +1,7 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = OrionLib:MakeWindow({
 Name = "AstralHook | Sonic Speed Simulator",
@@ -47,11 +51,11 @@ OrionLib:MakeNotification({Name = "AstralHook", Content = "Welcome to AstralHook
 Section1:AddToggle({Name = "Auto Pop Balloons & Crates", Default = false, Callback = function(Value1)
  getgenv().AutoPopBalloons = Value1
  while AutoPopBalloons do task.wait(0.3)
-	 for _,v in pairs(Destructibles:GetChildren()) do
-      if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") or v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
-	         ProcessDestructible:FireServer(v.Name) v:Destroy()
-	     end
-	  end
+for _,v in pairs(Destructibles:GetChildren()) do
+     if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") or v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
+	      ProcessDestructible:FireServer(v.Name) v:Destroy()
+	 end
+      end
    end
 end  
 })
@@ -79,17 +83,17 @@ end
 TabMis:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = function(Value3)
     getgenv().AutoComplete = Value3
 	while AutoComplete do task.wait(0.2)
-	RequestTeleportToZone:InvokeServer("Green Hill Obby 1")
-	     task.wait(0.02)
-         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 1")
+	     RequestTeleportToZone:InvokeServer("Green Hill Obby 1")
+	    -- task.wait(0.02)
+        -- ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 1")
 	     task.wait(0.02)
          ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 1", true)
          RequestFreeSpin:InvokeServer("GreenHill1")
 	     task.wait(0.15)
 
 	     RequestTeleportToZone:InvokeServer("Green Hill Obby 2")
-	     task.wait(0.02)
-         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 2")
+	     -- task.wait(0.02)
+         -- ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 2")
 	     task.wait(0.02)
          ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 2", true)
 	     task.wait(0.02)
@@ -97,8 +101,8 @@ TabMis:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = func
 	     task.wait(0.15)
 
 	     RequestTeleportToZone:InvokeServer("Green Hill Obby 3")
-	     task.wait(0.02)
-         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 3")
+	     -- task.wait(0.02)
+         -- ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 3")
 	     task.wait(0.02)
          ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 3", true)
 	     task.wait(0.02)
@@ -159,10 +163,10 @@ end
 })
 
 TabPets:AddDropdown({Name = "Choose Vending Machine", Default = "1",
-	Options = {"GreenHill1", "GreenHill2", "GreenHill3", "GreenHill4", "GreenHill5", "GreenHill6", "GreenHill7", "SandyHill1", "EmeraldHill1", "EmeraldHill2", "SnowValley1","HillTop1", "HillTop2", "HillTop3", "ChemicalPlant1", "ChemicalPlant2"},
-	Callback = function(Vending)
-	   Vendor = Vending
-    end    
+Options = {"GreenHill1", "GreenHill2", "GreenHill3", "GreenHill4", "GreenHill5", "GreenHill6", "GreenHill7", "SandyHill1", "EmeraldHill1", "EmeraldHill2", "SnowValley1","HillTop1", "HillTop2", "HillTop3", "ChemicalPlant1", "ChemicalPlant2"},
+   Callback = function(Vending)
+	  Vendor = Vending
+   end    
 })
 
 TabPets:AddToggle({Name = "Auto Open Selected Vending", Default = false, Callback = function(Value5)
