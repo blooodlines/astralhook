@@ -1,14 +1,4 @@
-pcall(function()
-    if syn then
-         http_request = syn.request
-    elseif fluxus.request then 
-         http_request = fluxus.request
-    elseif KRNL_LOADED then
-         http_request = request
-    end
-end)
 
-    
 local LocalPlayer = game:GetService("Players").LocalPlayer
 
 local Blacklisted = {1181917463}
