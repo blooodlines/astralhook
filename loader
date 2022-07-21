@@ -1,13 +1,20 @@
+pcall(function()
+    if syn then
+         http_request = syn.request
+    elseif KRNL_LOADED then
+         http_request = request
+    end
+end)
 
 local LocalPlayer = game:GetService("Players").LocalPlayer
 
 local Blacklisted = {1181917463}
 
-local SupportedGames = {
+local PI = {
     9049840490
 }
 
-if not table.find(SupportedGames, game.PlaceId) then
+if not table.find(PI, game.PlaceId) then
     print("Game is not supported.")
 else
 
