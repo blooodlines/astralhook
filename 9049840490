@@ -54,24 +54,18 @@ local Section4 = TabEvent:AddSection({Name = "Green Reef"})
 
 OrionLib:MakeNotification({Name = "AstralHook", Content = "Welcome to AstralHook.", Image = "rbxassetid://4370317928", Time = 5})
 
-local Controllers = game:GetService("ReplicatedFirst").Client.Controllers
-local mainModule = ReplicatedStorage.Shared.Modules.Character
-local characterController = require(Controllers.Character.CharacterController)
-
-local char = characterController:GetCharacter()
-
-function teleport(part)
-    if not part then return end
-    char:SetState(require(mainModule.State.Idle).new(char))
-    char.CFrame = part.CFrame
-end
-
 Section1:AddToggle({Name = "Auto Collect Everything", Default = false, Callback = function(Value0)
  getgenv().AutoCollect = Value0
 
  while AutoCollect do task.wait()
- for _,v in pairs(WorldCurrencies:GetChildren()) do task.wait()
-           teleport(v.PrimaryPart)
+ local knit = require(Knit)
+ local WorldCurrencyController = knit.GetController("WorldCurrencyController")
+ local PickupCurrency = WorldCurrencyController.PickupCurrency
+
+ for _,v in pairs(WorldCurrencies:GetChildren()) do
+     if v:IsA("Model") and v then
+              PickupCurrency(WorldCurrencyController, v, v:GetAttribute("RingValue") and "Rings" or "Experience", v:GetAttribute("OrbExperience") or v:GetAttribute("HoopExperience") or 0, CFrame.new())
+          end
        end
     end
  end
@@ -274,7 +268,7 @@ TabPets:AddToggle({Name = "Auto Combine Trails", Default = false, Callback = fun
 end  
 })
 
-TabCred:AddLabel("Scripted by infinite#7302 & troyw1987#7197")
+TabCred:AddLabel("Scripted by infinite#7302")
 TabCred:AddLabel("UI Library by shlex#2767")
 
 TabCred:AddParagraph("Information","Script changelogs at our Discord Server. If you find any bugs, inform us.")
