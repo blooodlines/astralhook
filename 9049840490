@@ -25,25 +25,26 @@ local ZoneService = Services.ZoneService
 local WorldCurrencyService = Services.WorldCurrencyService
 local DestructibleService = Services.DestructibleService
 local SpinWheelService = Services.SpinWheelService
-local CharacterService = Services.CharacterService
 
 -- Remotes
 local PickupCurrency = WorldCurrencyService.RE.PickupCurrency
 local ProcessDestructible = DestructibleService.RE.ProcessDestructible
 
+local FinishObby = ZoneService.RF.FinishObby
 local RequestFreeSpin = SpinWheelService.RF.RequestFreeSpin
 local RequestTeleportToZone = ZoneService.RF.RequestTeleportToZone
 local CompleteZoneObby = ZoneService.RF.CompleteZoneObby
-local RequestUnlockCharacter = CharacterService.RE.RequestUnlockCharacter
+local RequestUnlockCharacter = Services.CharacterService.RE.RequestUnlockCharacter
 
 for _,v in pairs(getconnections(LocalPlayer.Idled)) do
-    v:Disable()
+	v:Disable()
 end
 
 local Tab = Window:MakeTab({Name = "Main", Icon = "rbxassetid://4370345144"})
 local TabMis = Window:MakeTab({Name = "Miscellaneous", Icon = "rbxassetid://4483362748"})
 local TabPets = Window:MakeTab({Name = "Pets", Icon = "rbxassetid://3610237052"})
 local TabEvent = Window:MakeTab({Name = "Event", Icon = "rbxassetid://4483346149"})
+-- local TabTracker = Window:MakeTab({Name = "Stat Tracker", Icon = "rbxassetid://4400700509"})
 local TabCred = Window:MakeTab({Name = "Credits", Icon = "rbxassetid://6961018885"})
 
 local Section1 = Tab:AddSection({Name = "Farming"})
@@ -52,7 +53,7 @@ local Section2 = TabMis:AddSection({Name = "Obbys"})
 local Section3 = TabEvent:AddSection({Name = "Tornado Assault"})
 local Section4 = TabEvent:AddSection({Name = "Green Reef"})
 
-OrionLib:MakeNotification({Name = "AstralHook", Content = "Welcome to AstralHook.", Image = "rbxassetid://4370317928", Time = 5})
+OrionLib:MakeNotification({Name = "AstralHook", Content = "Welcome to AstralHook. You're on the Developer Version.", Image = "rbxassetid://4370341699", Time = 5})
 
 Section1:AddToggle({Name = "Auto Collect Everything", Default = false, Callback = function(Value0)
  getgenv().AutoCollect = Value0
@@ -71,7 +72,7 @@ Section1:AddToggle({Name = "Auto Collect Everything", Default = false, Callback 
  end
 })
 
-Section1:AddButton({Name = "Remove Collect Particles", Callback = function()
+Section1:AddButton({Name = "Remove Currency Particles", Callback = function()
 while task.wait() do
 local ProgressionParticles = ReplicatedStorage.Assets.Particles.ProgressionParticles
 local WorldPickupUI = require(Controllers.UI.WorldPickupUI)
@@ -81,7 +82,7 @@ local Particles = {
 	"ExperienceHoopPickupParticles",
 	"EventCurrencyPickupParticles",
 	"LevelUp",
-        "Rebirth"
+    "Rebirth"
 }
 
 for _,v in pairs(WorldPickupUI.Objects) do
@@ -100,11 +101,11 @@ end
 Section1:AddToggle({Name = "Auto Pop Balloons & Crates", Default = false, Callback = function(Value1)
  getgenv().AutoPopBalloons = Value1
  while AutoPopBalloons do task.wait(0.3)
-       for _,v in next, Destructibles:GetChildren() do
-           if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") or v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
-	       ProcessDestructible:FireServer(v.Name) v:Destroy()
-	 end
-      end
+	 for _,v in next, Destructibles:GetChildren() do
+        if v:FindFirstChild("base").DestroyEffect:FindFirstChild("pop") or v:FindFirstChild("base").DestroyEffect:FindFirstChild("dus") and v then
+	         ProcessDestructible:FireServer(v.Name) v:Destroy()
+	     end
+	  end
    end
 end  
 })
@@ -132,29 +133,29 @@ end
 Section2:AddToggle({Name = "Auto Complete Obbys", Default = false, Callback = function(Value3)
     getgenv().AutoComplete = Value3
 	while AutoComplete do task.wait(0.2)
-	RequestTeleportToZone:InvokeServer("Green Hill Obby 1")
+	    RequestTeleportToZone:InvokeServer("Green Hill Obby 1")
         task.wait(0.015)
         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 1")
-	task.wait(0.015)
-        ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 1", true)
+	    task.wait(0.015)
+        FinishObby:InvokeServer("Green Hill Obby 1", true)
         RequestFreeSpin:InvokeServer("GreenHill1")
-	task.wait(0.15)
+	    task.wait(0.15)
 
-	RequestTeleportToZone:InvokeServer("Green Hill Obby 2")
-	task.wait(0.015)
+	    RequestTeleportToZone:InvokeServer("Green Hill Obby 2")
+	    task.wait(0.015)
         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 2")
-	task.wait(0.015)
-        ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 2", true)
-	task.wait(0.015)
+	    task.wait(0.015)
+        FinishObby:InvokeServer("Green Hill Obby 2", true)
+	    task.wait(0.015)
         RequestFreeSpin:InvokeServer("GreenHill2")
-	task.wait(0.15)
+	    task.wait(0.15)
 
-	RequestTeleportToZone:InvokeServer("Green Hill Obby 3")
-	task.wait(0.015)
+	    RequestTeleportToZone:InvokeServer("Green Hill Obby 3")
+	    task.wait(0.015)
         ZoneService.RE.ZoneLoaded:FireServer("Green Hill Obby 3")
-	task.wait(0.015)
-        ZoneService.RF.FinishObby:InvokeServer("Green Hill Obby 3", true)
-	task.wait(0.15)
+	    task.wait(0.015)
+        FinishObby:InvokeServer("Green Hill Obby 3", true)
+	    task.wait(0.15)
         RequestFreeSpin:InvokeServer("GreenHill3")
    end
 end  
@@ -165,24 +166,25 @@ Section2:AddButton({Name = "Complete All World Obbys", Callback = function()
     RequestTeleportToZone:InvokeServer("Lost Valley Obby", "Green Hill Exit")
     CompleteZoneObby:InvokeServer()
     task.wait(0.5)
-    
+
     RequestTeleportToZone:InvokeServer("Emerald Hill Obby", "Lost Valley Exit")
 	CompleteZoneObby:InvokeServer()
     task.wait(0.5)
-    
+
     RequestTeleportToZone:InvokeServer("Snow Valley Obby", "Emerald Hill Exit")
 	CompleteZoneObby:InvokeServer()
-
     task.wait(0.5)
-    
+
     RequestTeleportToZone:InvokeServer("Hill Top Zone Obby", "Snow Valley Exit")
 	CompleteZoneObby:InvokeServer()
 end    
 })
 
+-- Teleport(CFrame.new(-10247.515625, 4394.0458984375, -6944.66162109375)) 
+
 TabMis:AddButton({Name = "Unlock All Characters", Callback = function()
     RequestUnlockCharacter:FireServer("sonic")
-    task.wait(0.1)
+	task.wait(0.1)
     RequestTeleportToZone:InvokeServer("Lost Valley")
     RequestUnlockCharacter:FireServer("tails")
     task.wait(0.1)
@@ -191,46 +193,48 @@ TabMis:AddButton({Name = "Unlock All Characters", Callback = function()
 end
 })
 
-TabMis:AddButton({Name = "Claim Playtime Rewards", Callback = function()
+TabMis:AddButton({Name = "Claim PlayTime Rewards", Callback = function()
 for i = 1, 12 do
-        Services.GratitudeService.RF.AcquireReward:InvokeServer(i)
+	   Services.GratitudeService.RF.AcquireReward:InvokeServer(i)
    end
 end    
 })
 
-Section3:AddToggle({Name = "Auto Explode Badniks ", Default = false, Callback = function(AX)
-    getgenv().AutoExplode = AX
+Section3:AddToggle({Name = "Auto Explode Badniks ", Default = false, Callback = function(Value4)
+    getgenv().AutoExplode = Value4
     while AutoExplode do task.wait(0.5)
     for _,v in next, Destructibles:GetChildren() do
          if v then
-	      ProcessDestructible:FireServer(v.Name) v:Destroy()
-	 end
-      end
+	          ProcessDestructible:FireServer(v.Name) v:Destroy()
+	     end
+	  end
    end
 end
 })
 
-Section3:AddButton({Name = "Finish Race", Callback = function()
-      FinishObby:InvokeServer("TornadoAssault", true)
-      RequestFreeSpin:InvokeServer("TornadoAssault")
-  end    
+Section3:AddToggle({Name = "Auto Win Tornado Assault Race", Default = false, Callback = function(Value5)
+    getgenv().AutoWinTornado = Value5
+	while AutoWinTornado do task.wait(0.015)
+	    RequestTeleportToZone:InvokeServer("TornadoAssault")
+        task.wait(0.015)
+        ZoneService.RE.ZoneLoaded:FireServer("TornadoAssault")
+	    task.wait(0.015)
+		ZoneService.RF.FinishObby:InvokeServer("TornadoAssault", true)
+	    RequestFreeSpin:InvokeServer("TornadoAssault")
+   end
+end  
 })
 
-Section4:AddToggle({Name = "Auto Explode Badniks", Default = false, Callback = function(AX2)
-    getgenv().AutoExplode2 = AX2
+Section4:AddToggle({Name = "Auto Explode Badniks", Default = false, Callback = function(Value6)
+    getgenv().AutoExplode2 = Value6
     while AutoExplode2 do task.wait(0.5)
     for _,v in next, Destructibles:GetChildren() do
         if v then
-	     ProcessDestructible:FireServer(v.Name) v:Destroy()
-	 end
-      end
+	          ProcessDestructible:FireServer(v.Name) v:Destroy()
+	     end
+	  end
    end
 end
-})
-
-Section4:AddButton({Name = "Find Froggy", Callback = function()
-      Services.FindFroggyService.RF.AttemptFroggyPickup:InvokeServer()
-  end    
 })
 
 TabPets:AddDropdown({Name = "Choose Vending Machine", Default = "1",
@@ -250,15 +254,46 @@ end
 
 TabPets:AddToggle({Name = "Auto Combine Chaos", Default = false, Callback = function(Value8)
     getgenv().AutoCombine = Value8
-	while AutoCombine do task.wait(1)
+	while AutoCombine do task.wait(3)
 	local DataController = require(Controllers.Player.DataController)
       
 	for i,v in pairs(DataController.Data.Pets) do
-	      Services.PetService.RE.CombinePet:FireServer(v)
+		 Services.PetService.RE.CombinePet:FireServer(i, v)
       end
    end
 end  
 })
+
+TabPets:AddToggle({Name = "Auto Combine Trails", Default = false, Callback = function(Value9)
+    getgenv().AutoCombineTrails = Value9
+	while AutoCombineTrails do task.wait(3)
+
+	local DataController = require(Controllers.Player.DataController)
+      
+	for i,v in pairs(DataController.Data.Trails) do
+		 Services.TrailService.RE.CombineTrail:FireServer(i, v)
+      end
+   end
+end  
+})
+
+--[[
+getgenv().Webhook = nil
+getgenv().Enabled = false
+
+TabTracker:AddTextbox({Name = "Webhook URL", Default = "", TextDisappear = false, Callback = function(ValueW)
+      Webhook = ValueW
+  end	  
+})
+
+TabTracker:AddToggle({Name = "Enabled Stat Tracker", Default = false, Callback = function(ValueWE)
+    Enabled = ValueWE
+    while Enabled do task.wait(60)
+	   print("Coming Soon.")
+   end
+end  
+})
+--]]
 
 TabCred:AddLabel("Scripted by infinite#7302")
 TabCred:AddLabel("UI Library by shlex#2767")
@@ -266,9 +301,9 @@ TabCred:AddLabel("UI Library by shlex#2767")
 TabCred:AddParagraph("Information","Script changelogs at our Discord Server. If you find any bugs, inform us.")
 
 TabCred:AddButton({Name = "Copy Discord Server Link", Callback = function()
-        setclipboard("https://discord.gg/ssaVPA6atd")
-	print("AstralHook: Copied Discord Server to Clipboard.")
-	OrionLib:MakeNotification({Name = "AstralHook", Content = "Copied Discord Server Link to Clipboard.", Image = "rbxassetid://4370317928", Time = 2})
+  setclipboard("https://discord.gg/ssaVPA6atd")
+	  print("AstralHook: Copied Discord Server to Clipboard.")
+	  OrionLib:MakeNotification({Name = "AstralHook", Content = "Copied Discord Server Link to Clipboard.", Image = "rbxassetid://4370317928", Time = 2})
   end    
 })
 
