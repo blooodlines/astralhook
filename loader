@@ -1,26 +1,22 @@
 pcall(function()
     if syn then
-         http_request = syn.request
+        http_request = syn.request
     elseif KRNL_LOADED then
-         http_request = request
+        http_request = request
     end
 end)
 
 local LocalPlayer = game:GetService("Players").LocalPlayer
-
-local Blacklisted = {1181917463}
-
-local PI = {
+local v1 = { 1181917463 }
+local v2 = {
     9049840490
 }
-
-if not table.find(PI, game.PlaceId) then
+if not table.find(v2, game.PlaceId) then
     print("Game is not supported.")
 else
-
-if table.find(Blacklisted, LocalPlayer.UserId) then
-       LocalPlayer:Kick()
-   else
-       loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/".. game.PlaceId))()
-   end
+if table.find(v1, LocalPlayer.UserId) then
+        LocalPlayer:Kick()
+    else
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/blooodlines/astralhook/main/".. game.PlaceId))()
+    end
 end
